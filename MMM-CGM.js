@@ -150,7 +150,7 @@ Module.register('MMM-CGM', {
           font-family="sans-serif"
           font-size="12"
           text-anchor="middle"
-          fill="#333"
+          fill="#fff"
         >
           --
         </text>
@@ -160,7 +160,7 @@ Module.register('MMM-CGM', {
           y="60"
           font-family="sans-serif"
           font-size="8"
-          fill="#333"
+          fill="#fff"
           text-anchor="middle"
         >
           0
@@ -170,7 +170,7 @@ Module.register('MMM-CGM', {
           y="60"
           font-family="sans-serif"
           font-size="8"
-          fill="#333"
+          fill="#fff"
           text-anchor="middle"
         >
           400
