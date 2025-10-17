@@ -138,9 +138,10 @@ Module.register('MMM-CGM', {
           d="${bgArcPath}"
           stroke="#fff"
           stroke-width="8"
+           shape-rendering="geometricPrecision"
         />
 
-        <path id="gauge-arc-fill" d="${fillArcPath}" stroke="red" stroke-width="8" />
+        <path id="gauge-arc-fill" d="${fillArcPath}" stroke="red" stroke-width="8" shape-rendering="geometricPrecision" />
 
         <text
           id="glucose-text"
@@ -193,6 +194,7 @@ Module.register('MMM-CGM', {
           fill="black"
           stroke="white"
           stroke-width="1"
+          shape-rendering="geometricPrecision"
         />
 
         <path
