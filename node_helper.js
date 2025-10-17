@@ -20,9 +20,13 @@ module.exports = NodeHelper.create({
           'Content-Type': 'application/json',
         },
       })
-      .then((accountResponse) =>
-        accountResponse.statusCode < 300 ? accountResponse.body : ''
-      )
+      .then((accountResponse) => {
+        console.log('account response', accountResponse.statusCode);
+        if (accountResponse.statusCode > 299) {
+          throw new Error('error retrieving account');
+        }
+        return accountResponse.body;
+      })
       .then((accountBody) => accountBody.json())
       .then((accountNumber) => {
         if (accountNumber) {
@@ -38,9 +42,13 @@ module.exports = NodeHelper.create({
                 'Content-Type': 'application/json',
               },
             })
-            .then((sessionResponse) =>
-              sessionResponse.statusCode < 300 ? sessionResponse.body : ''
-            )
+            .then((sessionResponse) => {
+              console.log('session response', sessionResponse.statusCode);
+              if (sessionResponse.statusCode > 299) {
+                throw new Error('error retrieving session');
+              }
+              return sessionResponse.body;
+            })
             .then((sessionBody) => sessionBody.json())
             .then((sessionId) => {
               if (sessionId) {
@@ -59,9 +67,13 @@ module.exports = NodeHelper.create({
                       },
                     }
                   )
-                  .then((readingResponse) =>
-                    readingResponse.statusCode < 300 ? readingResponse.body : []
-                  )
+                  .then((readingResponse) => {
+                    console.log('rr response', readingResponse.statusCode);
+                    if (readingResponse.statusCode > 299) {
+                      throw new Error('error retrieving session');
+                    }
+                    return readingResponse.body;
+                  })
                   .then((readingBody) => readingBody.json())
                   .then((readingJson) => {
                     if (readingJson.length > 0) {
