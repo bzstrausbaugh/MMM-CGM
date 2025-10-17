@@ -21,7 +21,6 @@ module.exports = NodeHelper.create({
         },
       })
       .then((accountResponse) => {
-        console.log('account response', accountResponse.statusCode);
         if (accountResponse.statusCode > 299) {
           throw new Error('error retrieving account');
         }
@@ -43,7 +42,6 @@ module.exports = NodeHelper.create({
               },
             })
             .then((sessionResponse) => {
-              console.log('session response', sessionResponse.statusCode);
               if (sessionResponse.statusCode > 299) {
                 throw new Error('error retrieving session');
               }
@@ -68,7 +66,6 @@ module.exports = NodeHelper.create({
                     }
                   )
                   .then((readingResponse) => {
-                    console.log('rr response', readingResponse.statusCode);
                     if (readingResponse.statusCode > 299) {
                       throw new Error('error retrieving session');
                     }
@@ -93,7 +90,6 @@ module.exports = NodeHelper.create({
   },
 
   socketNotificationReceived: function (notification, payload) {
-    console.log('Payload', payload);
     if (notification === 'GET_NEW_CGM_VALUE') {
       this.getCurrentReading(payload);
     }
