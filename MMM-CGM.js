@@ -82,7 +82,6 @@ function getColor(value, min, max) {
     value < 100
       ? Math.max((1.0 + (value - 100) / (30 - min)) * 120, 0)
       : (1.0 - (value - 100) / (max - 100)) * 120;
-  console.log('color', color);
   return `hsl(${color}, 100%, 50%)`;
 }
 
