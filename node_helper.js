@@ -93,6 +93,7 @@ module.exports = NodeHelper.create({
   },
 
   socketNotificationReceived: function (notification, payload) {
+    console.log('Payload', payload);
     if (notification === 'GET_NEW_CGM_VALUE') {
       this.getCurrentReading(payload);
     }
