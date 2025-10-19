@@ -132,7 +132,7 @@ Module.register('MMM-CGM', {
 
     wrapper.id = 'cgm-wrapper';
     wrapper.innerHTML = `<div id="gauge-container">
-      <svg viewBox="0 0 100 70" width="250" height="250">
+      <svg viewBox="0 0 100 70" width="225" height="225">
         <path
           id="gauge-arc-bg"
           d="${bgArcPath}"
