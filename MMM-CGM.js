@@ -28,27 +28,28 @@ function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
 function setTrending(glucose, trend) {
   const correction = glucose < 100 ? 3 : 0;
   const trendingArrow = document.getElementById('trending');
+  console.log('trend', trend);
   if (trend === 'DoubleUp' || trend === 'SingleUp') {
     trendingArrow.setAttribute('transform', `translate(${45 - correction},52)`);
   } else if (trend === 'FortyFiveUp') {
     trendingArrow.setAttribute(
       'transform',
-      `translate(${60 - correction},48) rotate(45)`
+      `translate(${60 - correction},8) rotate(45)`
     );
   } else if (trend === 'Flat') {
     trendingArrow.setAttribute(
       'transform',
-      `translate(${75 - correction},53) rotate(90)`
+      `translate(${75 - correction},13) rotate(90)`
     );
   } else if (trend === 'FortyFiveDown') {
     trendingArrow.setAttribute(
       'transform',
-      `translate(${77 - correction},65) rotate(135)`
+      `translate(${77 - correction},25) rotate(135)`
     );
   } else if (trend === 'DoubleDown' || trend === 'SingleDown') {
     trendingArrow.setAttribute(
       'transform',
-      `translate(${73 - correction},77) rotate(180)`
+      `translate(${73 - correction},37) rotate(180)`
     );
   }
 }
@@ -69,11 +70,10 @@ function updateGauge(glucose, trend) {
 
   glucoseText.textContent = `${glucose}`;
 
-  const fillArcPath = describeArc(50, 50, 40, startAngle, rotationAngle);
+  const fillArcPath = describeArc(50, 30, 40, startAngle, rotationAngle);
   fillArc.setAttribute('d', fillArcPath);
   fillArc.setAttribute('stroke', getColor(glucose, minGlucose, maxGlucose));
 
-  setGaugeValue(glucose);
   setTrending(glucose, trend);
 }
 
@@ -83,20 +83,6 @@ function getColor(value, min, max) {
       ? Math.max((1.0 + (value - 100) / (30 - min)) * 120, 0)
       : (1.0 - (value - 100) / (max - 100)) * 120;
   return `hsl(${color}, 100%, 50%)`;
-}
-
-function setGaugeValue(value) {
-  const needle = document.getElementById('needle');
-  // Ensure value is within 0-100 range
-  const normalizedValue = Math.min(Math.max(value, 0), 400);
-
-  // Calculate rotation angle. Gauge starts at -135deg and ends at +135deg.
-  const startAngle = -45;
-  const endAngle = 135;
-  const angle = startAngle + (normalizedValue / 400) * (endAngle - startAngle);
-
-  // Apply the rotation transform. The rotation origin is the center of the SVG.
-  needle.setAttribute('transform', `rotate(${angle} 50 50)`);
 }
 
 Module.register('MMM-CGM', {
@@ -124,16 +110,21 @@ Module.register('MMM-CGM', {
     );
   },
 
+  getStyles: function () {
+    return ['MMM-CGM.css'];
+  },
+
   getDom: function () {
     const wrapper = document.createElement('div');
-    const bgArcPath = describeArc(50, 50, 40, 270, 90);
+    const bgArcPath = describeArc(50, 30, 40, 270, 90);
     const rotationAngle = -90 + 0 * (90 + 90);
-    const fillArcPath = describeArc(50, 50, 40, -90, rotationAngle);
+    const fillArcPath = describeArc(50, 30, 40, -90, rotationAngle);
 
     wrapper.id = 'cgm-wrapper';
+    wrapper.classList.add('wrapper');
     wrapper.innerHTML = `<div id="gauge-container">
-      <svg viewBox="0 0 100 70" width="${this.config.size || 225}" height="${
-      this.config.size || 225
+      <svg viewBox="0 -20 100 70" width="${this.config.width || 200}" height="${
+      this.config.height || 135
     }">
         <path
           id="gauge-arc-bg"
@@ -148,7 +139,7 @@ Module.register('MMM-CGM', {
         <text
           id="glucose-text"
           x="40"
-          y="70"
+          y="30"
           font-family="sans-serif"
           font-size="12"
           text-anchor="middle"
@@ -159,7 +150,7 @@ Module.register('MMM-CGM', {
 
         <text
           x="12"
-          y="60"
+          y="40"
           font-family="sans-serif"
           font-size="8"
           fill="#fff"
@@ -169,7 +160,7 @@ Module.register('MMM-CGM', {
         </text>
         <text
           x="88"
-          y="60"
+          y="40"
           font-family="sans-serif"
           font-size="8"
           fill="#fff"
@@ -178,32 +169,11 @@ Module.register('MMM-CGM', {
           400
         </text>
 
-        <line
-          x1="50"
-          y1="50"
-          x2="30"
-          y2="30"
-          stroke="red"
-          stroke-width="3"
-          stroke-linecap="round"
-          id="needle"
-        />
-
-        <circle
-          cx="50"
-          cy="50"
-          r="2"
-          fill="black"
-          stroke="white"
-          stroke-width="1"
-          shape-rendering="geometricPrecision"
-        />
-
         <path
           id="trending"
           d="M7.03 9.97H11.03V18.89L13.04 18.92V9.97H17.03L12.03 4.97Z"
           fill="#fff"
-          transform="translate(42,52)"
+          transform="translate(42,12)"
         />
 
       </svg>
