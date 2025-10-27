@@ -73,14 +73,22 @@ module.exports = NodeHelper.create({
                   })
                   .then((readingBody) => readingBody.json())
                   .then((readingJson) => {
+                    let pl = {};
                     if (readingJson.length > 0) {
                       const currentReading = readingJson[0];
-                      _this.sendSocketNotification('GOT_NEW_CGM_VALUE', {
+                      pl = {
                         applicationId: payload.applicationId,
                         glucose: currentReading.Value,
                         trend: currentReading.Trend,
-                      });
+                      };
+                    } else {
+                      pl = {
+                        applicationId: payload.applicationId,
+                        glucose: -1,
+                        trend: '',
+                      };
                     }
+                    _this.sendSocketNotification('GOT_NEW_CGM_VALUE', pl);
                   });
               }
             });

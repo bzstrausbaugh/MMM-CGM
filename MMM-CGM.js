@@ -26,9 +26,13 @@ function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
 }
 
 function setTrending(glucose, trend) {
-  const correction = glucose < 100 ? 3 : 0;
   const trendingArrow = document.getElementById('trending');
-  console.log('trend', trend);
+  if (trend === '') {
+    trendingArrow.style.opacity = 0;
+    return;
+  }
+  const correction = glucose < 100 ? 3 : 0;
+  trendingArrow.style.opacity = 1;
   if (trend === 'DoubleUp' || trend === 'SingleUp') {
     trendingArrow.setAttribute('transform', `translate(${45 - correction},52)`);
   } else if (trend === 'FortyFiveUp') {
@@ -62,22 +66,38 @@ function updateGauge(glucose, trend) {
   const range = maxGlucose - minGlucose;
   const angleRange = endAngle - startAngle;
 
-  const glucoseText = document.getElementById('glucose-text');
-  const fillArc = document.getElementById('gauge-arc-fill');
+  if (glucose > -1) {
+    const glucoseText = document.getElementById('glucose-text');
+    const fillArc = document.getElementById('gauge-arc-fill');
 
-  const progress = (glucose - minGlucose) / range;
-  const rotationAngle = startAngle + progress * angleRange;
+    const progress = (glucose - minGlucose) / range;
+    const rotationAngle = startAngle + progress * angleRange;
 
-  glucoseText.textContent = `${glucose}`;
+    glucoseText.textContent = `${glucose}`;
 
-  const fillArcPath = describeArc(50, 30, 40, startAngle, rotationAngle);
-  fillArc.setAttribute('d', fillArcPath);
-  fillArc.setAttribute('stroke', getColor(glucose, minGlucose, maxGlucose));
+    const fillArcPath = describeArc(50, 30, 40, startAngle, rotationAngle);
+    fillArc.setAttribute('d', fillArcPath);
+    fillArc.setAttribute('stroke', getColor(glucose, minGlucose, maxGlucose));
+  } else {
+    const glucoseText = document.getElementById('glucose-text');
+    const fillArc = document.getElementById('gauge-arc-fill');
 
+    const progress = 1;
+    const rotationAngle = startAngle + progress * angleRange;
+
+    glucoseText.textContent = 'NO DATA';
+
+    const fillArcPath = describeArc(50, 30, 40, startAngle, rotationAngle);
+    fillArc.setAttribute('d', fillArcPath);
+    fillArc.setAttribute('stroke', getColor(glucose, minGlucose, maxGlucose));
+  }
   setTrending(glucose, trend);
 }
 
 function getColor(value, min, max) {
+  if (value === -1) {
+    return `hsl(208, 100%, 60%)`;
+  }
   const color =
     value < 100
       ? Math.max((1.0 + (value - 100) / (30 - min)) * 120, 0)
