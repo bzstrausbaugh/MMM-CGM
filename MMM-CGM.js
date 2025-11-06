@@ -33,6 +33,8 @@ function setTrending(glucose, trend) {
     trendingArrow.style.opacity = 0;
     trendingArrow2.style.opacity = 0;
     return;
+  } else {
+    trendingArrow.style.opacity = 1;
   }
   if (trend === 'DoubleUp' || trend === 'DoubleDown') {
     trendingArrow2.style.opacity = 1;
@@ -40,38 +42,38 @@ function setTrending(glucose, trend) {
     trendingArrow2.style.opacity = 0;
   }
   if (trend === 'DoubleDown') {
-    trendingWrapper.setAttribute('transform', 'rotate(90)');
+    trendingWrapper.setAttribute('transform', 'rotate(90), translate(35,-83)');
     trendingArrow.setAttribute('transform', 'scale(0.65), translate(-50,0)');
     trendingArrow2.setAttribute('transform', 'scale(0.65), translate(90,0)');
     return;
   }
   if (trend === 'DoubleUp') {
-    trendingWrapper.setAttribute('transform', 'rotate(-90)');
+    trendingWrapper.setAttribute('transform', 'rotate(-90), translate(-50,15)');
     trendingArrow.setAttribute('transform', 'scale(0.65), translate(140,0)');
     trendingArrow2.setAttribute('transform', 'scale(0.65), translate(0,0)');
     return;
   }
   if (trend === 'SingleUp') {
-    trendingWrapper.setAttribute('transform', 'rotate(-90)');
+    trendingWrapper.setAttribute('transform', 'rotate(-90), translate(-50,15)');
     trendingArrow.setAttribute('transform', 'scale(0.65), translate(140,0)');
     return;
   }
   if (trend === 'SingleDown') {
-    trendingWrapper.setAttribute('transform', 'rotate(90)');
+    trendingWrapper.setAttribute('transform', 'rotate(90), translate(35,-83)');
     trendingArrow.setAttribute('transform', 'scale(0.65), translate(-50,0)');
     return;
   }
   if (trend === 'FourtyFiveUp') {
-    trendingWrapper.setAttribute('transform', 'rotate(-45)');
+    trendingWrapper.setAttribute('transform', 'rotate(-45), translate(2,28)');
     trendingArrow.setAttribute('transform', 'scale(0.65), translate(-50,0)');
     return;
   }
   if (trend === 'FourtyFiveDown') {
-    trendingWrapper.setAttribute('transform', 'rotate(45)');
+    trendingWrapper.setAttribute('transform', 'rotate(45), translate(65,-40)');
     trendingArrow.setAttribute('transform', 'scale(0.65), translate(-50,0)');
     return;
   }
-  trendingWrapper.setAttribute('transform', 'rotate(0)');
+  trendingWrapper.setAttribute('transform', 'rotate(0), translate(45,5)');
   trendingArrow.setAttribute('transform', 'scale(0.65), translate(-50,0)');
 }
 
@@ -184,7 +186,7 @@ Module.register('MMM-CGM', {
         >
           --
         </text>
-        <svg xmlns="http://www.w3.org/2000/svg" x="48" y="5" viewBox="0 0 320 329" width="15" fill='#ffffff' id="trending-wrapper"><path id="trending" d="M311.1 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L243.2 256 73.9 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" transform="scale(0.65), translate(-50,0)"/><path id="trending-2" d="M311.1 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L243.2 256 73.9 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" transform="scale(0.65), translate(90,0)"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 329" width="15" fill='#ffffff' id="trending-wrapper"><path id="trending" style="opacity:0" d="M311.1 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L243.2 256 73.9 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" transform="scale(0.65), translate(-50,0)"/><path id="trending-2" style="opacity:0" d="M311.1 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L243.2 256 73.9 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" transform="scale(0.65), translate(90,0)"/></svg>
 
         <text
           x="12"
