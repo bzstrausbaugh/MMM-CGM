@@ -104,7 +104,7 @@ function updateGauge(glucose, trend) {
     const progress = 1;
     const rotationAngle = startAngle + progress * angleRange;
 
-    glucoseText.textContent = 'NO DATA';
+    glucoseText.textContent = '?';
 
     const fillArcPath = describeArc(50, 30, 40, startAngle, rotationAngle);
     fillArc.setAttribute('d', fillArcPath);
@@ -145,7 +145,7 @@ Module.register('MMM-CGM', {
     setTimeout(
       _this.getCurrentCGMValue,
       _this.config.fetchIntervalInSeconds * 1000,
-      _this
+      _this,
     );
   },
 
@@ -163,8 +163,8 @@ Module.register('MMM-CGM', {
     wrapper.classList.add('wrapper');
     wrapper.innerHTML = `<div id="gauge-container">
       <svg viewBox="0 -20 100 70" width="${this.config.width || 200}" height="${
-      this.config.height || 135
-    }">
+        this.config.height || 135
+      }">
         <path
           id="gauge-arc-bg"
           d="${bgArcPath}"
