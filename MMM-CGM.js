@@ -187,7 +187,7 @@ Module.register('MMM-CGM', {
           x="48"
           y="30"
           font-family="sans-serif"
-          font-size="34"
+          font-size="30"
           text-anchor="middle"
           fill="#fff"
         >
