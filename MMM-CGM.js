@@ -77,13 +77,14 @@ function setTrending(glucose, trend) {
   trendingArrow.setAttribute('transform', 'scale(0.65), translate(-50,0)');
 }
 
-function updateGauge(glucose, trend) {
+function updateGauge(glucose, trend, readTime) {
   const minGlucose = 0;
   const maxGlucose = 400;
   const startAngle = -90;
   const endAngle = 90;
   const range = maxGlucose - minGlucose;
   const angleRange = endAngle - startAngle;
+  const readTimeText = document.getElementById('read-time-text');
 
   if (glucose > -1) {
     const glucoseText = document.getElementById('glucose-text');
@@ -110,6 +111,12 @@ function updateGauge(glucose, trend) {
     fillArc.setAttribute('d', fillArcPath);
     fillArc.setAttribute('stroke', getColor(glucose, minGlucose, maxGlucose));
   }
+  if (readTime > -1) {
+    if (readTime === 0) {
+      readTimeText.textContent = 'Initializing...'
+    }
+    readTimeText.textContent = dayjs(readTime).format('MM/DD/YY hh:mm:ss A');
+  }
   setTrending(glucose, trend);
 }
 
@@ -127,7 +134,7 @@ function getColor(value, min, max) {
 Module.register('MMM-CGM', {
   start: function () {
     Log.log('Starting module: ' + this.name);
-
+    this.readTime = 0;
     this.currentReading = {};
     // Trigger the first request
     this.getCurrentCGMValue(this);
@@ -209,7 +216,8 @@ Module.register('MMM-CGM', {
           400
         </text>
       </svg>
-    </div>`;
+    </div>
+    <div id="read-time-text" class="read"></div>`;
     return wrapper;
   },
 
@@ -219,7 +227,7 @@ Module.register('MMM-CGM', {
       payload.applicationId === this.config.appId
     ) {
       if (payload) {
-        updateGauge(payload.glucose, payload.trend);
+        updateGauge(payload.glucose, payload.trend, payload.readTime);
       }
     }
   },

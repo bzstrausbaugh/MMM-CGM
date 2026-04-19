@@ -75,17 +75,20 @@ module.exports = NodeHelper.create({
                   .then((readingJson) => {
                     let pl = {};
                     if (readingJson.length > 0) {
+                      const currentReadTime = Date.now();
                       const currentReading = readingJson[0];
                       pl = {
                         applicationId: payload.applicationId,
                         glucose: currentReading.Value,
                         trend: currentReading.Trend,
+                        readTime: currentReadTime
                       };
                     } else {
                       pl = {
                         applicationId: payload.applicationId,
                         glucose: -1,
                         trend: '',
+                        readTime: -1
                       };
                     }
                     _this.sendSocketNotification('GOT_NEW_CGM_VALUE', pl);
