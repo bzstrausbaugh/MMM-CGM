@@ -53,28 +53,31 @@ function setTrending(glucose, trend) {
     trendingArrow2.setAttribute('transform', 'scale(0.65), translate(0,0)');
     return;
   }
-  if (trend === 'SingleUp') {
-    trendingWrapper.setAttribute('transform', 'rotate(-90), translate(-50,15)');
-    trendingArrow.setAttribute('transform', 'scale(0.65), translate(140,0)');
-    return;
-  }
   if (trend === 'SingleDown') {
     trendingWrapper.setAttribute('transform', 'rotate(90), translate(35,-83)');
     trendingArrow.setAttribute('transform', 'scale(0.65), translate(-50,0)');
     return;
   }
-  if (trend === 'FourtyFiveUp') {
+  if (trend === 'SingleUp') {
+    trendingWrapper.setAttribute('transform', 'rotate(-90), translate(-50,15)');
+    trendingArrow.setAttribute('transform', 'scale(0.65), translate(140,0)');
+    return;
+  }
+  if (trend === 'Flat') {
+    trendingWrapper.setAttribute('transform', 'rotate(0), translate(45,5)');
+    trendingArrow.setAttribute('transform', 'scale(0.65), translate(-50,0)');
+    return;
+  }
+  if (trend.endsWith('Up')) {
     trendingWrapper.setAttribute('transform', 'rotate(-45), translate(2,28)');
     trendingArrow.setAttribute('transform', 'scale(0.65), translate(-50,0)');
     return;
   }
-  if (trend === 'FourtyFiveDown') {
+  if (trend.endsWith('Down')) {
     trendingWrapper.setAttribute('transform', 'rotate(45), translate(65,-40)');
     trendingArrow.setAttribute('transform', 'scale(0.65), translate(-50,0)');
     return;
   }
-  trendingWrapper.setAttribute('transform', 'rotate(0), translate(45,5)');
-  trendingArrow.setAttribute('transform', 'scale(0.65), translate(-50,0)');
 }
 
 function updateGauge(glucose, trend, readTime) {
@@ -113,7 +116,7 @@ function updateGauge(glucose, trend, readTime) {
   }
   if (readTime > -1) {
     if (readTime === 0) {
-      readTimeText.textContent = 'Initializing...'
+      readTimeText.textContent = 'Initializing...';
     }
     readTimeText.textContent = dayjs(readTime).format('MM/DD/YY hh:mm:ss A');
   }
@@ -186,8 +189,7 @@ Module.register('MMM-CGM', {
           id="glucose-text"
           x="48"
           y="30"
-          font-family="sans-serif"
-          font-size="30"
+          font-size="34"
           text-anchor="middle"
           fill="#fff"
         >
@@ -198,7 +200,6 @@ Module.register('MMM-CGM', {
         <text
           x="12"
           y="40"
-          font-family="sans-serif"
           font-size="8"
           fill="#fff"
           text-anchor="middle"
@@ -208,7 +209,6 @@ Module.register('MMM-CGM', {
         <text
           x="88"
           y="40"
-          font-family="sans-serif"
           font-size="8"
           fill="#fff"
           text-anchor="middle"
