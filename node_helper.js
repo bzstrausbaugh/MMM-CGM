@@ -4,29 +4,39 @@ var undici = require('undici');
 module.exports = NodeHelper.create({
   start: function () {
     console.log('MMM-CGM helper, started...');
+    this.accountNumber = null;
+  },
+
+  getAccountNumber: async function (payload) {
+    if (this.accountNumber === null) {
+      const acctNumber = await undici
+        .request(`${payload.baseUrl}/General/AuthenticatePublisherAccount`, {
+          method: 'POST',
+          body: JSON.stringify({
+            accountName: payload.username,
+            password: payload.password,
+            applicationId: payload.applicationId,
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then((accountResponse) => {
+          if (accountResponse.statusCode > 299) {
+            throw new Error('error retrieving account');
+          }
+          return accountResponse.body;
+        })
+        .then((accountBody) => accountBody.json());
+      this.accountNumber = acctNumber;
+    }
+    return this.accountNumber;
   },
 
   getCurrentReading: function (payload) {
     var _this = this;
-    undici
-      .request(`${payload.baseUrl}/General/AuthenticatePublisherAccount`, {
-        method: 'POST',
-        body: JSON.stringify({
-          accountName: payload.username,
-          password: payload.password,
-          applicationId: payload.applicationId,
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .then((accountResponse) => {
-        if (accountResponse.statusCode > 299) {
-          throw new Error('error retrieving account');
-        }
-        return accountResponse.body;
-      })
-      .then((accountBody) => accountBody.json())
+    _this
+      .getAccountNumber(payload)
       .then((accountNumber) => {
         if (accountNumber) {
           undici
@@ -63,7 +73,7 @@ module.exports = NodeHelper.create({
                       headers: {
                         'Content-Type': 'application/json',
                       },
-                    }
+                    },
                   )
                   .then((readingResponse) => {
                     if (readingResponse.statusCode > 299) {
@@ -81,14 +91,14 @@ module.exports = NodeHelper.create({
                         applicationId: payload.applicationId,
                         glucose: currentReading.Value,
                         trend: currentReading.Trend,
-                        readTime: currentReadTime
+                        readTime: currentReadTime,
                       };
                     } else {
                       pl = {
                         applicationId: payload.applicationId,
                         glucose: -1,
                         trend: '',
-                        readTime: -1
+                        readTime: -1,
                       };
                     }
                     _this.sendSocketNotification('GOT_NEW_CGM_VALUE', pl);
